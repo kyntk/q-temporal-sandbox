@@ -1,4 +1,6 @@
-# Getting Started with Create React App
+# Sandbox for tc39/proposal-temporal
+
+## Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
