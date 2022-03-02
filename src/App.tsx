@@ -1,4 +1,5 @@
 import { Temporal } from '@js-temporal/polyfill'
+import { useState } from 'react'
 import { chunk } from './chunk'
 
 const weeks = [
@@ -69,8 +70,8 @@ const getFollowingDays = (endDayOfThisMonth: Day): Day[] => {
 
 export default function App() {
   const now = Temporal.Now
-  const targetMonth = now.plainDateISO().add({ months: 1 })
-  // .subtract({ months: 1 })
+  const [targetMonth, setTargetMonth] = useState(now.plainDateISO())
+
   const daysInThisMonth = getDaysInThisMonth(
     Temporal.PlainDate.from({
       year: targetMonth.year,
@@ -88,7 +89,31 @@ export default function App() {
 
   return (
     <>
-      <h1>Target Month: {targetMonth.toLocaleString()}</h1>
+      <h1>Target Month: {targetMonth.toPlainYearMonth().toString()}</h1>
+      <button
+        type='button'
+        onClick={() => {
+          setTargetMonth(targetMonth.subtract({ months: 1 }))
+        }}
+      >
+        previous month
+      </button>
+      <button
+        type='button'
+        onClick={() => {
+          setTargetMonth(targetMonth.add({ months: 1 }))
+        }}
+      >
+        following month
+      </button>
+      <button
+        type='button'
+        onClick={() => {
+          setTargetMonth(now.plainDateISO())
+        }}
+      >
+        current month
+      </button>
       <h2>Current DateTime Information</h2>
       <div>
         <span>DateTime:</span>
