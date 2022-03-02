@@ -87,9 +87,25 @@ export default function App() {
     7
   )
 
+  const getDayStyle = (date: Day['date']) => {
+    let style = { ...baseDayStyle }
+    if (!Temporal.PlainDate.compare(date, now.plainDateISO())) {
+      style = { ...style, ...{ backgroundColor: '#d2e3fc' } }
+    }
+
+    if (
+      Temporal.PlainDate.compare(date, daysInThisMonth[0].date) < 0 ||
+      Temporal.PlainDate.compare(date, daysInThisMonth.slice(-1)[0].date) > 0
+    ) {
+      style = { ...style, ...{ color: '#70757a' } }
+    }
+
+    return style
+  }
+
   return (
     <>
-      <h1>Target Month: {targetMonth.toPlainYearMonth().toString()}</h1>
+      <h1>Month: {targetMonth.toPlainYearMonth().toString()}</h1>
       <button
         type='button'
         onClick={() => {
@@ -138,7 +154,7 @@ export default function App() {
         {calendar.map((week, i) => (
           <div style={weekStyle} key={i}>
             {week.map((day) => (
-              <div style={dayStyle} key={day.date.toString()}>
+              <div style={getDayStyle(day.date)} key={day.date.toString()}>
                 {day.day === 1
                   ? day.date.toPlainMonthDay().toString()
                   : day.day}
@@ -164,7 +180,7 @@ const dateStyle = {
   lineHeight: '24px',
   borderRight: borderColor,
 }
-const dayStyle = {
+const baseDayStyle = {
   width: '100%',
   'text-align': 'center',
   lineHeight: '96px',
