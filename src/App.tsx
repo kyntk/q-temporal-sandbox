@@ -130,19 +130,6 @@ export default function App() {
       >
         current month
       </button>
-      <h2>Current DateTime Information</h2>
-      <div>
-        <span>DateTime:</span>
-        <span>{now.plainDateTimeISO().toLocaleString()}</span>
-      </div>
-      <div>
-        <span>Date:</span>
-        <span>{now.plainDateISO().toLocaleString()}</span>
-      </div>
-      <div>
-        <span>Time:</span>
-        <span>{now.plainTimeISO().toLocaleString()}</span>
-      </div>
       <div style={calendarStyle}>
         <div style={weekStyle}>
           {weeks.map((day) => (
