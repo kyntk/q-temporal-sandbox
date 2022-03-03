@@ -1,0 +1,33 @@
+.calendar {
+  width: 100%;
+  border: #dadce0 1px solid;
+  margin-top: 24px;
+}
+
+.week {
+  display: flex;
+  border-bottom: #dadce0 1px solid;
+  width: 100%;
+}
+
+.date {
+  width: 100%;
+  text-align: center;
+  line-height: 24px;
+  border-right: #dadce0 1px solid;
+}
+
+.day {
+  width: 100%;
+  text-align: center;
+  line-height: 96px;
+  border-right: #dadce0 1px solid;
+}
+
+.today {
+  background-color: #d2e3fc;
+}
+
+.otherMonth {
+  color: #70757a;
+}

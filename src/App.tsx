@@ -1,6 +1,7 @@
 import { Temporal } from '@js-temporal/polyfill'
 import { useState } from 'react'
 import { chunk } from './chunk'
+import './App.css'
 
 const weeks = [
   'Sunday',
@@ -54,10 +55,8 @@ const getPreviousDays = (firstDayOfThisMonth: Day): Day[] => {
 const getFollowingDays = (endDayOfThisMonth: Day): Day[] => {
   const days =
     endDayOfThisMonth.dayOfWeek === 7 ? 6 : 7 - endDayOfThisMonth.dayOfWeek - 1 // Week starts from Sunday(7)
-  console.log('endDayOfThisMonth', endDayOfThisMonth)
   const followingDays: Day[] = []
   for (let i = 0; i < days; i++) {
-    console.log('loop')
     const date = endDayOfThisMonth.date.add({ days: i + 1 })
     followingDays[i] = {
       day: date.day,
@@ -88,19 +87,19 @@ export default function App() {
   )
 
   const getDayStyle = (date: Day['date']) => {
-    let style = { ...baseDayStyle }
+    const stylingClassName = ['day']
     if (!Temporal.PlainDate.compare(date, now.plainDateISO())) {
-      style = { ...style, ...{ backgroundColor: '#d2e3fc' } }
+      stylingClassName.push('today')
     }
 
     if (
       Temporal.PlainDate.compare(date, daysInThisMonth[0].date) < 0 ||
       Temporal.PlainDate.compare(date, daysInThisMonth.slice(-1)[0].date) > 0
     ) {
-      style = { ...style, ...{ color: '#70757a' } }
+      stylingClassName.push('otherMonth')
     }
 
-    return style
+    return stylingClassName.join(' ')
   }
 
   return (
@@ -130,18 +129,18 @@ export default function App() {
       >
         current month
       </button>
-      <div style={calendarStyle}>
-        <div style={weekStyle}>
+      <div className='calendar'>
+        <div className='week'>
           {weeks.map((day) => (
-            <div style={dateStyle} key={day}>
+            <div className='date' key={day}>
               {day}
             </div>
           ))}
         </div>
         {calendar.map((week, i) => (
-          <div style={weekStyle} key={i}>
+          <div className='week' key={i}>
             {week.map((day) => (
-              <div style={getDayStyle(day.date)} key={day.date.toString()}>
+              <div className={getDayStyle(day.date)} key={day.date.toString()}>
                 {day.day === 1
                   ? day.date.toPlainMonthDay().toString()
                   : day.day}
@@ -152,24 +151,4 @@ export default function App() {
       </div>
     </>
   )
-}
-
-const borderColor = '#dadce0 1px solid'
-const calendarStyle = { width: '100%', border: borderColor, marginTop: '24px' }
-const weekStyle = {
-  display: 'flex',
-  borderBottom: borderColor,
-  width: '100%',
-}
-const dateStyle = {
-  width: '100%',
-  'text-align': 'center',
-  lineHeight: '24px',
-  borderRight: borderColor,
-}
-const baseDayStyle = {
-  width: '100%',
-  'text-align': 'center',
-  lineHeight: '96px',
-  borderRight: borderColor,
 }
