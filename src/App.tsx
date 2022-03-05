@@ -1,4 +1,4 @@
-import { Temporal } from '@js-temporal/polyfill'
+import { Temporal, Intl } from '@js-temporal/polyfill'
 import { useState } from 'react'
 import { chunk } from './chunk'
 import './App.css'
@@ -102,6 +102,11 @@ export default function App() {
     return stylingClassName.join(' ')
   }
 
+  const monthDateFormater = new Intl.DateTimeFormat(undefined, {
+    day: 'numeric',
+    month: 'numeric',
+  })
+
   return (
     <>
       <h1>Month: {targetMonth.toPlainYearMonth().toString()}</h1>
@@ -141,9 +146,7 @@ export default function App() {
           <div className='week' key={i}>
             {week.map((day) => (
               <div className={getDayStyle(day.date)} key={day.date.toString()}>
-                {day.day === 1
-                  ? day.date.toPlainMonthDay().toString()
-                  : day.day}
+                {day.day === 1 ? monthDateFormater.format(day.date) : day.day}
               </div>
             ))}
           </div>
