@@ -1,5 +1,5 @@
 import { Temporal, Intl } from '@js-temporal/polyfill'
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import { chunk } from './chunk'
 import './App.css'
 
@@ -17,6 +17,10 @@ interface Day {
   day: number
   date: Temporal.PlainDate
   dayOfWeek: number
+}
+
+interface HTMLInputElementWithShowPicker extends HTMLInputElement {
+  showPicker(): void
 }
 
 const getDaysInThisMonth = (targetMonth: Temporal.PlainDate): Day[] => {
@@ -106,17 +110,31 @@ export default function App() {
     day: 'numeric',
     month: 'numeric',
   })
+  const inputRef = useRef<HTMLInputElementWithShowPicker>(null)
 
   return (
     <>
       <h1>Month: {targetMonth.toPlainYearMonth().toString()}</h1>
+      <button onClick={() => inputRef?.current?.showPicker()}>
+        select month
+      </button>
+      <input
+        type='month'
+        ref={inputRef}
+        onChange={(e) => {
+          const [year, month] = e.target.value
+            .split('-')
+            .map((val) => Number(val))
+          setTargetMonth(Temporal.PlainDate.from({ year, month, day: 1 }))
+        }}
+      />
       <button
         type='button'
         onClick={() => {
           setTargetMonth(targetMonth.subtract({ months: 1 }))
         }}
       >
-        previous month
+        &lt; previous month
       </button>
       <button
         type='button'
@@ -124,7 +142,7 @@ export default function App() {
           setTargetMonth(targetMonth.add({ months: 1 }))
         }}
       >
-        following month
+        following month &gt;
       </button>
       <button
         type='button'
